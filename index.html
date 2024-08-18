@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>音乐平台</title>
+    <script src="./js/vue.js"></script>
+    <style>
+        .music-player {
+            display: flex;
+            align-items: center;
+        }
+
+        span {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="music-player">
+        <audio ref="audio" :src="currentSong.url" controls
+               :autoplay="autoPlay"
+               @ended="nextSong"
+        ></audio>
+        <button style="margin-left: 10px;" @click="previousSong">上一首</button>
+        <button style="margin-left: 10px;" @click="nextSong">下一首</button>
+    </div>
+    <div>
+        <ol v-for="(obj, index) in this.musicList" :key="index">
+            <span @click="musicListClick(index, obj)">{{ obj.id + ": " + obj.name + "-" + obj.author}}</span>
+        </ol>
+    </div>
+</div>
+<script type="text/javascript">
+    new Vue({
+        el: "#app",
+        data: {
+            isPlaying: true,
+            musicUrl: {
+                type: String,
+                required: true
+            },
+            progress: 0,
+            duration: 0,
+            musicList: [
+                {
+                    id: 1, url: "./data/1.mp3", name: "告白气球", author: "周杰伦",
+                },
+                {
+                    id: 2, url: "./data/2.mp3", name: "半兽人", author: "周杰伦",
+                },
+                {
+                    id: 3, url: "./data/3.mp3", name: "七里香", author: "周杰伦",
+                },
+                {
+                    id: 4, url: "./data/4.mp3", name: "夜曲", author: "周杰伦",
+                },
+                {
+                    id: 5, url: "./data/5.mp3", name: "晴天", author: "周杰伦",
+                },
+                {
+                    id: 6, url: "./data/6.mp3", name: "爱在西元前", author: "周杰伦",
+                },
+                {
+                    id: 7, url: "./data/7.mp3", name: "明明就", author: "周杰伦",
+                },
+                {
+                    id: 8, url: "./data/8.mp3", name: "搁浅", author: "周杰伦",
+                },
+            ],
+            currentPlayIndex: 0,
+            autoPlay: true,
+        },
+        computed: {
+            currentSong() {
+                return this.musicList[this.currentPlayIndex];
+            }
+        },
+        methods: {
+            musicListClick(index, value){
+                this.currentPlayIndex = index;
+                this.autoPlay = true;
+                this.$refs.audio.play();
+
+            },
+            previousSong(){
+                if (this.currentPlayIndex === 0){
+                    this.currentPlayIndex = this.musicList.length -1;
+                }else {
+                    this.currentPlayIndex--;
+                }
+            },
+            nextSong(){
+                this.currentPlayIndex = (this.currentPlayIndex + 1) % this.musicList.length;
+            },
+        },
+        create(){
+            this.autoPlay = false;
+        },
+        mounted() {
+        },
+    })
+</script>
+</body>
+</html>
