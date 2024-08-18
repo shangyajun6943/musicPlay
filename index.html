@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>音乐平台</title>
-    <script src="./js/vue.js"></script>
+
     <style>
         .music-player {
             display: flex;
@@ -14,24 +14,106 @@
             margin-left: 5px;
         }
     </style>
+    <link rel="stylesheet" href="css/element-ui.css">
+
 </head>
 <body>
 <div id="app">
-    <div class="music-player">
-        <audio ref="audio" :src="currentSong.url" controls
-               :autoplay="autoPlay"
-               @ended="nextSong"
-        ></audio>
-        <button style="margin-left: 10px;" @click="previousSong">上一首</button>
-        <button style="margin-left: 10px;" @click="nextSong">下一首</button>
-    </div>
-    <div>
-        <ol v-for="(obj, index) in this.musicList" :key="index">
-            <span @click="musicListClick(index, obj)">{{ obj.id + ": " + obj.name + "-" + obj.author}}</span>
-        </ol>
-    </div>
+    <el-row style="margin-bottom: 20px;">
+        <el-col :span="8" :offset="10" >
+            <el-tag type="danger" style="font-size: 20px;font-weight: bolder;">
+                当前播放: {{ this.musicList[this.currentPlayIndex].name + "---" +
+            this.musicList[this.currentPlayIndex].author}}</el-tag>
+        </el-col>
+    </el-row>
+    <el-row>
+        <el-col :span="4" :offset="8">
+            <audio ref="audio" :src="currentSong.url" controls
+                   :autoplay="autoPlay"
+                   @ended="nextSong"
+            ></audio>
+        </el-col>
+        <el-col :span="4" style="line-height: 54px;">
+            <el-button type="primary" size="small" round style="margin-left: 10px;" @click="previousSong">上一首</el-button>
+            <el-button type="primary" size="small" round style="margin-left: 10px;" @click="nextSong">下一首</el-button>
+        </el-col>
+    </el-row>
+    <el-row>
+        <el-col :span="2" v-for="(obj, index) in this.musicList" :key="index" style="margin-top: 10px;">
+            <el-tag>
+                <span @click="musicListClick(index, obj)">{{ obj.id + ": " + obj.name + "-" + obj.author}}</span>
+            </el-tag>
+        </el-col>
+    </el-row>
 </div>
+<script src="./js/vue.js"></script>
+<script src="js/element-ui.js"></script>
 <script type="text/javascript">
+    let musicListJson = [
+        {
+            id: 1, url: "./data/1.mp3", name: "告白气球", author: "周杰伦",
+        },
+        {
+            id: 2, url: "./data/2.mp3", name: "半兽人", author: "周杰伦",
+        },
+        {
+            id: 3, url: "./data/3.mp3", name: "七里香", author: "周杰伦",
+        },
+        {
+            id: 4, url: "./data/4.mp3", name: "夜曲", author: "周杰伦",
+        },
+        {
+            id: 5, url: "./data/5.mp3", name: "晴天", author: "周杰伦",
+        },
+        {
+            id: 6, url: "./data/6.mp3", name: "爱在西元前", author: "周杰伦",
+        },
+        {
+            id: 7, url: "./data/7.mp3", name: "明明就", author: "周杰伦",
+        },
+        {
+            id: 8, url: "./data/8.mp3", name: "搁浅", author: "周杰伦",
+        },
+        {
+            id: 9, url: "./data/9.mp3", name: "以父之名", author: "周杰伦",
+        },
+        {
+            id: 10, url: "./data/10.m4a", name: "每段路", author: "吕方",
+        },
+        {
+            id: 11, url: "./data/11.m4a", name: "错位时空", author: "艾晨",
+        },
+        {
+            id: 12, url: "./data/12.m4a", name: "像我这样的人", author: "毛不易",
+        },
+        {
+            id: 13, url: "./data/13.mp3", name: "曾经的你", author: "许巍",
+        },
+        {
+            id: 14, url: "./data/14.m4a", name: "像风一样自由", author: "许巍",
+        },
+        {
+            id: 15, url: "./data/15.m4a", name: "蓝莲花", author: "许巍",
+        },
+        {
+            id: 16, url: "./data/16.m4a", name: "旅行", author: "许巍",
+        },
+        {
+            id: 17, url: "./data/17.m4a", name: "故乡", author: "许巍",
+        },
+        {
+            id: 18, url: "./data/18.m4a", name: "完美生活", author: "许巍",
+        },
+        {
+            id: 19, url: "./data/19.m4a", name: "那一年", author: "许巍",
+        },
+        {
+            id: 20, url: "./data/20.m4a", name: "平凡之路", author: "朴树",
+        },
+        {
+            id: 21, url: "./data/21.m4a", name: "生如夏花", author: "朴树",
+        },
+    ]
     new Vue({
         el: "#app",
         data: {
@@ -42,32 +124,7 @@
             },
             progress: 0,
             duration: 0,
-            musicList: [
-                {
-                    id: 1, url: "./data/1.mp3", name: "告白气球", author: "周杰伦",
-                },
-                {
-                    id: 2, url: "./data/2.mp3", name: "半兽人", author: "周杰伦",
-                },
-                {
-                    id: 3, url: "./data/3.mp3", name: "七里香", author: "周杰伦",
-                },
-                {
-                    id: 4, url: "./data/4.mp3", name: "夜曲", author: "周杰伦",
-                },
-                {
-                    id: 5, url: "./data/5.mp3", name: "晴天", author: "周杰伦",
-                },
-                {
-                    id: 6, url: "./data/6.mp3", name: "爱在西元前", author: "周杰伦",
-                },
-                {
-                    id: 7, url: "./data/7.mp3", name: "明明就", author: "周杰伦",
-                },
-                {
-                    id: 8, url: "./data/8.mp3", name: "搁浅", author: "周杰伦",
-                },
-            ],
+            musicList: musicListJson,
             currentPlayIndex: 0,
             autoPlay: true,
         },
