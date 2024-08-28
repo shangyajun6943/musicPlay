@@ -3,27 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>音乐平台</title>
-
-    <style>
-        .music-player {
-            display: flex;
-            align-items: center;
-        }
-
-        span {
-            margin-left: 5px;
-        }
-    </style>
     <link rel="stylesheet" href="css/element-ui.css">
-
 </head>
 <body>
 <div id="app">
     <el-row style="margin-bottom: 20px;">
-        <el-col :span="8" :offset="10" >
+        <el-col :span="8" :offset="10">
             <el-tag type="danger" style="font-size: 20px;font-weight: bolder;">
                 当前播放: {{ this.musicList[this.currentPlayIndex].name + "---" +
-            this.musicList[this.currentPlayIndex].author}}</el-tag>
+            this.musicList[this.currentPlayIndex].author}}
+            </el-tag>
         </el-col>
     </el-row>
     <el-row>
@@ -34,12 +23,17 @@
             ></audio>
         </el-col>
         <el-col :span="4" style="line-height: 54px;">
-            <el-button type="primary" size="small" round style="margin-left: 10px;" @click="previousSong">上一首</el-button>
-            <el-button type="primary" size="small" round style="margin-left: 10px;" @click="nextSong">下一首</el-button>
+            <el-button type="primary" size="small" round style="margin-left: 10px;"
+                       @click="previousSong">上一首
+            </el-button>
+            <el-button type="primary" size="small" round style="margin-left: 10px;"
+                       @click="nextSong">下一首
+            </el-button>
         </el-col>
     </el-row>
     <el-row>
-        <el-col :span="2" v-for="(obj, index) in this.musicList" :key="index" style="margin-top: 10px;">
+        <el-col :span="2" v-for="(obj, index) in this.musicList" :key="index"
+                style="margin-top: 10px;">
             <el-tag>
                 <span @click="musicListClick(index, obj)">{{ obj.id + ": " + obj.name + "-" + obj.author}}</span>
             </el-tag>
@@ -113,17 +107,47 @@
         {
             id: 21, url: "./data/21.m4a", name: "生如夏花", author: "朴树",
         },
+        {
+            id: 22, url: "./data/22.mp3", name: "有何不可", author: "许嵩",
+        },
+        {
+            id: 23, url: "./data/23.mp3", name: "清明雨上", author: "许嵩",
+        },
+        {
+            id: 24, url: "./data/24.mp3", name: "素颜", author: "许嵩",
+        },
+        {
+            id: 25, url: "./data/25.mp3", name: "李白", author: "李荣浩",
+        },
+        {
+            id: 26, url: "./data/26.mp3", name: "模特", author: "李荣浩",
+        },
+        {
+            id: 27, url: "./data/27.mp3", name: "不将就", author: "李荣浩",
+        },
+        {
+            id: 28, url: "./data/28.mp3", name: "年少有为", author: "李荣浩",
+        },
+        {
+            id: 29, url: "./data/29.m4a", name: "戒烟", author: "李荣浩",
+        },
+        {
+            id: 30, url: "./data/30.mp3", name: "喜剧之王", author: "李荣浩",
+        },
+        {
+            id: 31, url: "./data/31.mp3", name: "麻雀", author: "李荣浩",
+        },
+        {
+            id: 32, url: "./data/32.mp3", name: "有理想", author: "李荣浩",
+        },
+        {
+            id: 33, url: "./data/33.mp3", name: "悟空", author: "戴荃",
+        },
     ]
     new Vue({
         el: "#app",
         data: {
             isPlaying: true,
-            musicUrl: {
-                type: String,
-                required: true
-            },
-            progress: 0,
-            duration: 0,
             musicList: musicListJson,
             currentPlayIndex: 0,
             autoPlay: true,
@@ -134,24 +158,24 @@
             }
         },
         methods: {
-            musicListClick(index, value){
+            musicListClick(index, value) {
                 this.currentPlayIndex = index;
                 this.autoPlay = true;
                 this.$refs.audio.play();
 
             },
-            previousSong(){
-                if (this.currentPlayIndex === 0){
-                    this.currentPlayIndex = this.musicList.length -1;
-                }else {
+            previousSong() {
+                if (this.currentPlayIndex === 0) {
+                    this.currentPlayIndex = this.musicList.length - 1;
+                } else {
                     this.currentPlayIndex--;
                 }
             },
-            nextSong(){
+            nextSong() {
                 this.currentPlayIndex = (this.currentPlayIndex + 1) % this.musicList.length;
             },
         },
-        create(){
+        create() {
             this.autoPlay = false;
         },
         mounted() {
